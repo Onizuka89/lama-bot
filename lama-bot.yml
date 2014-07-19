@@ -3,6 +3,7 @@ default: &defaults
   nick: 'LLama'
   channel: '#nix-chat'
   welcome_message: "Hi! I'm lamaBot, here to help my master save irc chat log, written by Nick the Watman! https://github.com/Nikolay-Kotykhov/lama-bot"
+  message_file: 'messages.txt'
 development:
   <<: *defaults
 production:

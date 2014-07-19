@@ -20,6 +20,7 @@ unless config[:host]
 	exit
 end
 
+message_logger = File.new(config[:message_file] || 'messages.txt', 'a')
 ######
 
 lama = EventMachine::IRC::Client.new do
@@ -47,7 +48,7 @@ lama = EventMachine::IRC::Client.new do
 	end
 	
 	on :message do |source, target, msg|
-		puts "#{Time.now} <#{source}> -> <#{target}> : #{msg}"
+		message_logger.puts "#{Time.now} <#{source}> -> <#{target}> : #{msg}"
 		# TODO move to events model and use matches
 		if msg == "#{config[:nick]}, are you here"
 			message target, "yes, I'm here, #{source}"
@@ -55,6 +56,9 @@ lama = EventMachine::IRC::Client.new do
 		if msg == "hi #{config[:nick]}"
 			message target, config[:welcome_message]
 		end
+	end
+	on :disconnect do
+		message_logger.close
 	end
 end
 
