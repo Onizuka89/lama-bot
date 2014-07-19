@@ -28,6 +28,9 @@ lama = EventMachine::IRC::Client.new do
 	
 	on :connect do
 		nick(config[:nick])
+		EM.add_timer(2) do
+			join config[:channel]
+		end
 	end
 
 	on :nick do
@@ -38,16 +41,20 @@ lama = EventMachine::IRC::Client.new do
 	
 	on :join do |c|
 		EM.add_timer(2) do
-			message config[:channel], config[:welcome_message]
+			#calls everytime someone join
+			#Say hello?
 		end
 	end
 	
 	on :message do |source, target, msg|
 		puts "#{Time.now} <#{source}> -> <#{target}> : #{msg}"
-		if msg == 'lama, are you here'
+		# TODO move to events model and use matches
+		if msg == "#{config[:nick]}, are you here"
 			message target, "yes, I'm here, #{source}"
 		end
-		
+		if msg == "hi #{config[:nick]}"
+			message target, config[:welcome_message]
+		end
 	end
 end
 
