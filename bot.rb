@@ -23,8 +23,6 @@ end
 ######
 
 lama = EventMachine::IRC::Client.new do
-	puts config[:host]
-	
 	host config[:host]
 	port config[:port] || '6667'
 	
@@ -45,10 +43,9 @@ lama = EventMachine::IRC::Client.new do
 	end
 	
 	on :message do |source, target, msg|
-		puts source
-		puts target
+		puts "#{Time.now} <#{source}> -> <#{target}> : #{msg}"
 		if msg == 'lama, are you here'
-			message target, "yes, I'm #{source}"
+			message target, "yes, I'm here, #{source}"
 		end
 		
 	end

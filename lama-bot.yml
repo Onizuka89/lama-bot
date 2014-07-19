@@ -1,7 +1,6 @@
 default: &defaults
   host: 'irc.foonetic.net'
   nick: 'LLama'
-  stdout: true
   channel: '#nix-chat'
   welcome_message: "Hi! I'm lamaBot, here to help my master save irc chat log, written by Nick the Watman! https://github.com/Nikolay-Kotykhov/lama-bot"
 development:
