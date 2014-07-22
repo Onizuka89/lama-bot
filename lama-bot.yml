@@ -2,9 +2,12 @@ default: &defaults
   host: 'irc.foonetic.net'
   nick: 'LLama'
   channel: '#nix-chat'
-  welcome_message: "Hi! I'm lamaBot, here to help my master save irc chat log, written by Nick the Watman! https://github.com/Nikolay-Kotykhov/lama-bot"
+  welcome_message: "Hi! I'm Evil_Llama, I'm here to annoy everybody, based on: https://github.com/Nikolay-Kotykhov/lama-bot"
   message_file: 'messages.txt'
 development:
   <<: *defaults
+  nick: "dev-Evil_Llama"
+  channel: "#pleaseLetThereBeNobodyHere"
 production:
   <<: *defaults
+  nick: "Evil_Llama"
