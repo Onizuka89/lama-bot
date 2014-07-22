@@ -9,6 +9,8 @@ module CommonBehaver
 			end
 			react_on /say something good/i, :fortune
 			react_on /I need fortune cookie/i, :fortune
+            react_on /say something bad something bad/i, :fortune
+            react_on /predict my future/i, :fortune
 		end
 	end
 end
