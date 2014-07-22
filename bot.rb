@@ -7,6 +7,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'lib'))
 require 'llama'
 $start_time = Time.now.to_i
 
+ConfigFileLoader.env = "production" if ARGV[0] == "production"
+
 if ConfigFileLoader.env.nil?
 	ConfigFileLoader.env = 'development'
 end
