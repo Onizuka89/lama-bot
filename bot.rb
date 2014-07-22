@@ -3,6 +3,8 @@ require 'bundler/setup'
 require 'config_file_loader'
 require 'em-irc'
 require 'logger'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'lib'))
+require 'llama'
 $start_time = Time.now.to_i
 
 if ConfigFileLoader.env.nil?
@@ -20,13 +22,15 @@ unless config[:host]
 	exit
 end
 
-message_logger = File.new(config[:message_file] || 'messages.txt', 'a')
+log_file = config[:message_file] || 'messages.txt'
+message_logger = File.new("#{log_file}.#{Time.now.to_i}", 'a')
 ######
+Llama.nick = config[:nick]
 
-lama = EventMachine::IRC::Client.new do
+llama = EventMachine::IRC::Client.new do
 	host config[:host]
 	port config[:port] || '6667'
-	
+	Llama.client = self
 	on :connect do
 		nick(config[:nick])
 		EM.add_timer(2) do
@@ -49,17 +53,12 @@ lama = EventMachine::IRC::Client.new do
 	
 	on :message do |source, target, msg|
 		message_logger.puts "#{Time.now} <#{source}> -> <#{target}> : #{msg}"
-		# TODO move to events model and use matches
-		if msg == "#{config[:nick]}, are you here"
-			message target, "yes, I'm here, #{source}"
-		end
-		if msg == "hi #{config[:nick]}"
-			message target, config[:welcome_message]
-		end
+		Llama.active_target= target
+		Llama.get_reaction msg
 	end
 	on :disconnect do
 		message_logger.close
 	end
 end
 
-lama.run!
+llama.run!
